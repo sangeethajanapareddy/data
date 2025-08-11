@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Time Capsule - Lifecycle Flowchart</title>
+  <style>
+    :root{
+      --bg1: #ffecd2;
+      --bg2: #fcb69f;
+      --card: #ffffff;
+      --text: #2c3e50;
+      --accent: #e17055;
+      --shadow: 0 8px 30px rgba(44,62,80,0.08);
+    }
+    html,body{height:100%;margin:0;font-family: 'Segoe UI', system-ui, Arial;}
+    body{
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+      padding:30px;box-sizing:border-box;color:var(--text);
+    }
+
+    .container{
+      width:100%;max-width:960px;background:transparent;padding:20px;border-radius:14px;
+    }
+
+    h1{font-size:28px;margin:8px 0 18px;text-align:center}
+    p.lead{text-align:center;margin:0 0 24px;color:rgba(44,62,80,0.9)}
+
+    /* Flowchart card */
+    .flowcard{
+      background:var(--card);border-radius:14px;padding:20px;box-shadow:var(--shadow);
+    }
+
+    svg{width:100%;height:auto;display:block}
+
+    /* Node styles inside svg (using classes) */
+    .node rect{fill:#fff;stroke:#e8e8e8;stroke-width:1.5;rx:10;ry:10;}
+    .node text{font-size:13px;fill:var(--text);font-weight:600}
+    .decision rect{fill:#fff9ea;stroke:#ffd6a8}
+    .action rect{fill:#f7fbff;stroke:#d6e7ff}
+    .end rect{fill:#f0fff4;stroke:#bfeec9}
+
+    .arrow path{stroke:#9aa9b3;stroke-width:2;fill:none;marker-end:url(#arrowhead)}
+
+    /* subtle fade-in */
+    .flowcard{opacity:0;transform:translateY(10px);animation:cardIn 600ms ease forwards}
+    @keyframes cardIn{to{opacity:1;transform:none}}
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width:640px){
+      .node text{font-size:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Time Capsule — App Lifecycle</h1>
+    <p class="lead">Visual flowchart showing the steps from page load to displaying the "1 Year Ago" memory.</p>
+
+    <div class="flowcard">
+      <!-- SVG flowchart -->
+      <svg viewBox="0 0 1000 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Time Capsule lifecycle flowchart">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z" fill="#9aa9b3"/>
+          </marker>
+        </defs>
+
+        <!-- Page Load -->
+        <g class="node action" transform="translate(280,20)">
+          <rect width="440" height="70"></rect>
+          <text x="220" y="26" text-anchor="middle">Page Load</text>
+          <text x="220" y="46" text-anchor="middle" font-weight="400" font-size="12">HTML &amp; CSS render, UI shown</text>
+        </g>
+
+        <!-- User types -->
+        <g class="node action" transform="translate(280,120)">
+          <rect width="440" height="60"></rect>
+          <text x="220" y="30" text-anchor="middle">User types in textarea</text>
+        </g>
+
+        <!-- Click button -->
+        <g class="node action" transform="translate(280,210)">
+          <rect width="440" height="60"></rect>
+          <text x="220" y="30" text-anchor="middle">User clicks 'Open Time Capsule' (generateMemory())</text>
+        </g>
+
+        <!-- Decision: empty? -->
+        <g class="node decision" transform="translate(380,300)">
+          <rect width="240" height="80"></rect>
+          <text x="120" y="28" text-anchor="middle">Check if input is empty?</text>
+          <text x="120" y="52" text-anchor="middle" font-weight="400" font-size="12">if (input.trim() === "")</text>
+        </g>
+
+        <!-- Alert -->
+        <g class="node action" transform="translate(40,420)">
+          <rect width="320" height="60"></rect>
+          <text x="160" y="34" text-anchor="middle">Show alert: "Please write something first!"</text>
+        </g>
+
+        <!-- Back to typing arrow text -->
+        <text x="200" y="530" font-size="12" fill="#6b7480" text-anchor="middle">(Back to typing)</text>
+
+        <!-- Pick random memory -->
+        <g class="node action" transform="translate(360,420)">
+          <rect width="280" height="60"></rect>
+          <text x="140" y="24" text-anchor="middle">Pick random memory</text>
+          <text x="140" y="42" text-anchor="middle" font-weight="400" font-size="12">from fakeMemories[]</text>
+        </g>
+
+        <!-- Display result -->
+        <g class="node action" transform="translate(260,510)">
+          <rect width="480" height="80"></rect>
+          <text x="240" y="30" text-anchor="middle">Display</text>
+          <text x="240" y="52" text-anchor="middle" font-weight="400" font-size="12">Today (user input) + 1 Year Ago (random)</text>
+        </g>
+
+        <!-- Animate & show -->
+        <g class="node end" transform="translate(360,620)">
+          <rect width="280" height="60"></rect>
+          <text x="140" y="34" text-anchor="middle">Apply fade-in &amp; show memory box (End)</text>
+        </g>
+
+        <!-- Arrows -->
+        <g class="arrow">
+          <!-- A -> B -->
+          <path d="M500,90 L500,120"/>
+
+          <!-- B -> C -->
+          <path d="M500,180 L500,210"/>
+
+          <!-- C -> Decision -->
+          <path d="M500,270 L500,300"/>
+
+          <!-- Decision -> Alert (Yes) -->
+          <path d="M470,380 C420,380 200,380 200,420"/>
+
+          <!-- Alert -> Back to typing -->
+          <path d="M200,480 C200,500 300,500 300,480"/>
+
+          <!-- Decision -> Random (No) -->
+          <path d="M620,380 C660,380 640,410 500,420"/>
+
+          <!-- Random -> Display -->
+          <path d="M500,480 L500,510"/>
+
+          <!-- Display -> End -->
+          <path d="M500,590 L500,620"/>
+        </g>
+
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
